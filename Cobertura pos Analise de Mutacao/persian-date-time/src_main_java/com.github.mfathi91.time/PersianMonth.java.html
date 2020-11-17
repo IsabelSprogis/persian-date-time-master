@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PersianMonth.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">persian-date-time (17/11/2020 15:19:23)</a> &gt; <a href="../../index.html" class="el_group">persian-date-time</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">com.github.mfathi91.time</a> &gt; <span class="el_source">PersianMonth.java</span></div><h1>PersianMonth.java</h1><pre class="source lang-java linenums">package com.github.mfathi91.time;
+
+import net.jcip.annotations.Immutable;
+
+/**
+ * A month-of-year, such as Mehr.
+ * &lt;p&gt;
+ * {@code PersianMonth} is an enum representing the 12 months of the year
+ * Farvardin, Ordibehesht, Khordad, Tir, Mordad, Shahrivar, Mehr, Aban, Azar, Dey,
+ * Bahman and Esfand.
+ * &lt;p&gt;
+ * In addition to the textual enum name, each month-of-year has an {@code int} value.
+ * The {@code int} value follows normal usage and the ISO-8601 standard,
+ * from 1 (January) to 12 (December). It is recommended that applications use the enum
+ * rather than the {@code int} value to ensure code clarity.
+ * &lt;p&gt;
+ * &lt;b&gt;Do not use {@code ordinal()} to obtain the numeric representation of {@code Month}.
+ * Use {@code getValue()} instead.&lt;/b&gt;
+ * &lt;p&gt;
+ * This is an immutable enum and can be used in concurrent programs.
+ *
+ * @author Mahmoud Fathi
+ */
+@Immutable
+<span class="fc" id="L25">public enum PersianMonth {</span>
+
+<span class="fc" id="L27">    /**</span>
+     * The singleton instance for the month of Farvardin with 31 days.
+     * This has the numeric value of {@code 1}.
+     */
+<span class="fc" id="L31">    FARVARDIN(&quot;فروردین&quot;),</span>
+
+<span class="fc" id="L33">    /**</span>
+     * The singleton instance for the month of Ordibehesht with 31 days.
+     * This has the numeric value of {@code 2}.
+     */
+<span class="fc" id="L37">    ORDIBEHESHT(&quot;اردیبهشت&quot;),</span>
+
+<span class="fc" id="L39">    /**</span>
+     * The singleton instance for the month of Khordad with 31 days.
+     * This has the numeric value of {@code 3}.
+     */
+<span class="fc" id="L43">    KHORDAD(&quot;خرداد&quot;),</span>
+
+<span class="fc" id="L45">    /**</span>
+     * The singleton instance for the month of Tir with 31 days.
+     * This has the numeric value of {@code 4}.
+     */
+<span class="fc" id="L49">    TIR(&quot;تیر&quot;),</span>
+
+<span class="fc" id="L51">    /**</span>
+     * The singleton instance for the month of Mordad with 31 days.
+     * This has the numeric value of {@code 5}.
+     */
+<span class="fc" id="L55">    MORDAD(&quot;مرداد&quot;),</span>
+
+<span class="fc" id="L57">    /**</span>
+     * The singleton instance for the month of Shahrivar with 31 days.
+     * This has the numeric value of {@code 6}.
+     */
+<span class="fc" id="L61">    SHAHRIVAR(&quot;شهریور&quot;),</span>
+
+<span class="fc" id="L63">    /**</span>
+     * The singleton instance for the month of Mehr with 30 days.
+     * This has the numeric value of {@code 7}.
+     */
+<span class="fc" id="L67">    MEHR(&quot;مهر&quot;),</span>
+
+<span class="fc" id="L69">    /**</span>
+     * The singleton instance for the month of Aban with 30 days.
+     * This has the numeric value of {@code 8}.
+     */
+<span class="fc" id="L73">    ABAN(&quot;آبان&quot;),</span>
+
+<span class="fc" id="L75">    /**</span>
+     * The singleton instance for the month of Azar with 30 days.
+     * This has the numeric value of {@code 9}.
+     */
+<span class="fc" id="L79">    AZAR(&quot;آذر&quot;),</span>
+
+<span class="fc" id="L81">    /**</span>
+     * The singleton instance for the month of Dey with 30 days.
+     * This has the numeric value of {@code 10}.
+     */
+<span class="fc" id="L85">    DEY(&quot;دی&quot;),</span>
+
+<span class="fc" id="L87">    /**</span>
+     * The singleton instance for the month of Bahman with 30 days.
+     * This has the numeric value of {@code 11}.
+     */
+<span class="fc" id="L91">    BAHMAN(&quot;بهمن&quot;),</span>
+
+<span class="fc" id="L93">    /**</span>
+     * The singleton instance for the month of Farvardin with 29 days in non-leap year
+     * and 30 days in leap year. This has the numeric value of {@code 12}.
+     */
+<span class="fc" id="L97">    ESFAND(&quot;اسفند&quot;);</span>
+
+    private final String persianName;
+
+<span class="fc" id="L101">    PersianMonth(String persianName) {</span>
+<span class="fc" id="L102">        this.persianName = persianName;</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Returns name of month in persian alphabe.
+     *
+     * @return persian name of month.
+     */
+    public String getPersianName() {
+<span class="fc" id="L111">        return persianName;</span>
+    }
+
+    /**
+     * Returns the equivalent instance of {@code Month}, based on the passed argument.
+     * Argument should be from 1 to 12.
+     *
+     * @param month the number of month
+     * @return instance of {@code Month} enum.
+     */
+    static PersianMonth of(int month) {
+<span class="fc" id="L122">        MyUtils.intRequireRange(month, 1, 12, &quot;month&quot;);</span>
+<span class="fc" id="L123">        return PersianMonth.values()[month - 1];</span>
+    }
+
+    /**
+     * @return number of month, from 1 (Farvardin) to 12 (Esfand)
+     */
+    public int getValue() {
+<span class="fc" id="L130">        return ordinal() + 1;</span>
+    }
+
+    /**
+     * Returns length of month. For the first six months of year, {@code 31} is returned.
+     * For the second six months of year except Esfand, {@code 30} is returned.
+     * Finlally For Esfand, if {@code leapYear} is true, it returns {@code 30}, otherwise
+     * it returns {@code 29}.
+     *
+     * @param leapYear true, if length of months in leap year is required
+     * @return length of months of Persian calendar
+     */
+    public int length(boolean leapYear) {
+<span class="fc" id="L143">        int value = getValue();</span>
+<span class="fc bfc" id="L144" title="All 6 branches covered.">        return value &lt; 7 ? 31 : (value != 12 ? 30 : (leapYear ? 30 : 29));</span>
+    }
+
+    /**
+     * Returns length of month in a leap year. For the first six months of year,
+     * {@code 31} is returned. For the second six months of year {@code 30} is returned.
+     *
+     * @return length of months of Persian calendar
+     */
+    public int maxLength() {
+<span class="fc" id="L154">        return length(true);</span>
+    }
+
+    /**
+     * Returns length of month in a non-leap year. For the first six months of year,
+     * {@code 31} is returned. For the second six months of year except Esfand, {@code 30}
+     * is returned. For Esfand {@code 29} is returned.
+     *
+     * @return length of months of Persian calendar
+     */
+    public int minLength() {
+<span class="fc" id="L165">        return length(false);</span>
+    }
+
+    /**
+     * Returns a month-of-year that is {@code months} after current month. The calculation
+     * rolls around end of year from Esfand to Farvardin.
+     * &lt;p&gt;
+     * This enum is immutable and unaffected by calling this method.
+     *
+     * @param months the months to add, positive or negative
+     * @return the resulting month, not null
+     */
+    public PersianMonth plus(long months) {
+<span class="fc" id="L178">        int amount = (int) (months % 12);</span>
+        // For negative argument
+<span class="fc" id="L180">        amount = (amount + 12) % 12;</span>
+<span class="fc" id="L181">        return PersianMonth.values()[(ordinal() + amount) % 12];</span>
+    }
+
+    /**
+     * Returns a month-of-year that is {@code months} before current month. The calculation
+     * rolls around the start of year from Farvardin to Esfand.
+     * &lt;p&gt;
+     * This enum is immutable and unaffected by calling this method.
+     *
+     * @param months the months to subtract, positive or negative
+     * @return the resulting month, not null
+     */
+    public PersianMonth minus(long months) {
+<span class="fc" id="L194">        return plus(-months);</span>
+    }
+
+    /**
+     * Returns elapsed days from first of the year to first of this month.
+     *
+     * @return elapsed days from first of the year to first of this month.
+     */
+    public int daysToFirstOfMonth() {
+<span class="fc" id="L203">        int val = getValue();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        return (val &lt;= 6) ? (31 * (val - 1)) : ((30 * (val - 1 - 6)) + 186);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>persian-date-time (17/11/2020 15:19:23)</div></body></html>

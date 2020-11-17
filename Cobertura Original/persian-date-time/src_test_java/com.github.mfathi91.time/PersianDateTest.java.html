@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PersianDateTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">persian-date-time (17/11/2020 14:55:13)</a> &gt; <a href="../../index.html" class="el_group">persian-date-time</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.github.mfathi91.time</a> &gt; <span class="el_source">PersianDateTest.java</span></div><h1>PersianDateTest.java</h1><pre class="source lang-java linenums">package com.github.mfathi91.time;
+
+import org.junit.Test;
+
+import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.chrono.ChronoPeriod;
+import java.time.temporal.UnsupportedTemporalTypeException;
+
+import static java.time.temporal.ChronoField.*;
+import static java.time.temporal.ChronoUnit.*;
+import static org.junit.Assert.*;
+
+<span class="fc" id="L15">public class PersianDateTest {</span>
+
+    @Test
+    public void testOnStaticFactoryMethodNow() {
+<span class="fc" id="L19">        assertEquals(PersianDate.fromGregorian(LocalDate.now()), PersianDate.now());</span>
+<span class="fc" id="L20">    }</span>
+
+    @Test
+    public void testOnStaticFactoryMethod1() {
+<span class="fc" id="L24">        PersianDate pd = PersianDate.of(1400, 2, 17);</span>
+<span class="fc" id="L25">        assertEquals(1400, pd.getYear());</span>
+<span class="fc" id="L26">        assertEquals(2, pd.getMonthValue());</span>
+<span class="fc" id="L27">        assertEquals(PersianMonth.ORDIBEHESHT, pd.getMonth());</span>
+<span class="fc" id="L28">        assertEquals(17, pd.getDayOfMonth());</span>
+<span class="fc" id="L29">    }</span>
+
+    @Test
+    public void testOnStaticFactoryMethod2() {
+<span class="fc" id="L33">        PersianDate pd = PersianDate.of(1623, PersianMonth.AZAR, 10);</span>
+<span class="fc" id="L34">        assertEquals(1623, pd.getYear());</span>
+<span class="fc" id="L35">        assertEquals(9, pd.getMonthValue());</span>
+<span class="fc" id="L36">        assertEquals(PersianMonth.AZAR, pd.getMonth());</span>
+<span class="fc" id="L37">        assertEquals(10, pd.getDayOfMonth());</span>
+<span class="fc" id="L38">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnPersianDateOfInvalidDateNotLeapYear() {
+<span class="nc" id="L42">        PersianDate.of(1388, 12, 30);</span>
+<span class="nc" id="L43">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnPersianDateOfInvalidDate1() {
+<span class="nc" id="L47">        PersianDate.of(2000, 12, 2);</span>
+<span class="nc" id="L48">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnPersianDatePlus() {
+<span class="nc" id="L52">        PersianDate.of(1890, 6, 31).plusYears(120);</span>
+<span class="nc" id="L53">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnPersianDateInvalidDate2() {
+<span class="nc" id="L57">        PersianDate.of(1000, 4, 32);</span>
+<span class="nc" id="L58">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnGetDayOfYear() {
+<span class="fc" id="L63">        PersianDate pd = PersianDate.of(1400, 8, 15);</span>
+<span class="fc" id="L64">        assertEquals(231, pd.getDayOfYear());</span>
+<span class="fc" id="L65">    }</span>
+
+    @Test
+    public void testOnGetDayOfYearInLeapYear() {
+<span class="fc" id="L69">        PersianDate pd = PersianDate.of(1387, 12, 30);</span>
+<span class="fc" id="L70">        assertEquals(366, pd.getDayOfYear());</span>
+<span class="fc" id="L71">    }</span>
+
+    @Test
+    public void testOnGetDayOfWeek() {
+<span class="fc" id="L75">        PersianDate saturday = PersianDate.of(1395, 11, 23);</span>
+<span class="fc" id="L76">        assertEquals(DayOfWeek.SATURDAY, saturday.getDayOfWeek());</span>
+<span class="fc" id="L77">        PersianDate sunday = PersianDate.of(1395, 11, 24);</span>
+<span class="fc" id="L78">        assertEquals(DayOfWeek.SUNDAY, sunday.getDayOfWeek());</span>
+<span class="fc" id="L79">        PersianDate monday = PersianDate.of(1395, 11, 25);</span>
+<span class="fc" id="L80">        assertEquals(DayOfWeek.MONDAY, monday.getDayOfWeek());</span>
+<span class="fc" id="L81">        PersianDate friday = PersianDate.of(1395, 11, 29);</span>
+<span class="fc" id="L82">        assertEquals(DayOfWeek.FRIDAY, friday.getDayOfWeek());</span>
+<span class="fc" id="L83">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnToJulianDay() {
+<span class="fc" id="L88">        assertEquals(2458054, PersianDate.of(1396, 8, 6).toJulianDay());</span>
+<span class="fc" id="L89">        assertEquals(2462580, PersianDate.of(1408, 12, 30).toJulianDay());</span>
+<span class="fc" id="L90">        assertEquals(1984844, PersianDate.of(101, 1, 1).toJulianDay());</span>
+<span class="fc" id="L91">    }</span>
+
+    @Test
+    public void testOnOfJulianDay() {
+<span class="fc" id="L95">        assertEquals(PersianDate.of(1393, 11, 13), PersianDate.ofJulianDays(2457055));</span>
+<span class="fc" id="L96">        assertEquals(PersianDate.of(1791, 6, 19), PersianDate.ofJulianDays(2602276));</span>
+<span class="fc" id="L97">        assertEquals(PersianDate.of(320, 5, 5), PersianDate.ofJulianDays(2064960));</span>
+<span class="fc" id="L98">        assertEquals(PersianDate.of(321, 12, 29), PersianDate.ofJulianDays(2065561));</span>
+<span class="fc" id="L99">        assertEquals(PersianDate.of(473, 1, 1), PersianDate.ofJulianDays(2120714));</span>
+<span class="fc" id="L100">        assertEquals(PersianDate.of(474, 1, 1), PersianDate.ofJulianDays(2121079));</span>
+<span class="fc" id="L101">        assertEquals(PersianDate.of(474, 12, 30), PersianDate.ofJulianDays(2121444));</span>
+<span class="fc" id="L102">        assertEquals(PersianDate.of(475, 1, 1), PersianDate.ofJulianDays(2121445));</span>
+<span class="fc" id="L103">        assertEquals(PersianDate.MIN, PersianDate.ofJulianDays(1948320));</span>
+<span class="fc" id="L104">        assertEquals(PersianDate.MAX, PersianDate.ofJulianDays(2678438));</span>
+<span class="fc" id="L105">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnPlusYears() {
+<span class="fc" id="L110">        PersianDate actual = PersianDate.of(1400, 1, 1).plusYears(1);</span>
+<span class="fc" id="L111">        PersianDate expected = PersianDate.of(1401, 1, 1);</span>
+<span class="fc" id="L112">        assertEquals(expected, actual);</span>
+<span class="fc" id="L113">    }</span>
+
+    @Test
+    public void testOnPlusYearsLeapYear() {
+<span class="fc" id="L117">        PersianDate actual = PersianDate.of(1387, 12, 30).plusYears(1);</span>
+<span class="fc" id="L118">        PersianDate expected = PersianDate.of(1388, 12, 29);</span>
+<span class="fc" id="L119">        assertEquals(expected, actual);</span>
+<span class="fc" id="L120">    }</span>
+
+    @Test
+    public void testOnPlusYearsLeapYear100Years() {
+<span class="fc" id="L124">        PersianDate actual = PersianDate.of(1503, 12, 30).plusYears(100);</span>
+<span class="fc" id="L125">        PersianDate expected = PersianDate.of(1603, 12, 29);</span>
+<span class="fc" id="L126">        assertEquals(expected, actual);</span>
+<span class="fc" id="L127">    }</span>
+
+    @Test
+    public void testOnPlusYearsNegativeLeapYear104Years() {
+<span class="fc" id="L131">        PersianDate actual = PersianDate.of(1503, 12, 30).plusYears(-104);</span>
+<span class="fc" id="L132">        PersianDate expected = PersianDate.of(1399, 12, 30);</span>
+<span class="fc" id="L133">        assertEquals(expected, actual);</span>
+<span class="fc" id="L134">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnPlusMonthsZero() {
+<span class="fc" id="L139">        assertEquals(PersianDate.MIN, PersianDate.MIN.plusMonths(0));</span>
+<span class="fc" id="L140">    }</span>
+
+    @Test
+    public void testOnPlusMonths() {
+<span class="fc" id="L144">        PersianDate actual = PersianDate.of(1388, 1, 1).plusMonths(1);</span>
+<span class="fc" id="L145">        PersianDate expected = PersianDate.of(1388, 2, 1);</span>
+<span class="fc" id="L146">        assertEquals(expected, actual);</span>
+<span class="fc" id="L147">    }</span>
+
+    @Test
+    public void testOnPlusMonthsMoreThan12Months() {
+<span class="fc" id="L151">        PersianDate actual = PersianDate.of(1353, 10, 25).plusMonths(16);</span>
+<span class="fc" id="L152">        PersianDate expected = PersianDate.of(1355, 2, 25);</span>
+<span class="fc" id="L153">        assertEquals(expected, actual);</span>
+<span class="fc" id="L154">    }</span>
+
+    @Test
+    public void testOnPlusMonthShahrivarToMehr() {
+<span class="fc" id="L158">        PersianDate actual = PersianDate.of(1400, 6, 31).plusMonths(1);</span>
+<span class="fc" id="L159">        PersianDate expected = PersianDate.of(1400, 7, 30);</span>
+<span class="fc" id="L160">        assertEquals(expected, actual);</span>
+<span class="fc" id="L161">    }</span>
+
+    @Test
+    public void testOnPlusMonthEndOfMonthLeapYear() {
+<span class="fc" id="L165">        PersianDate actual = PersianDate.of(1387, 3, 30).plusMonths(9);</span>
+<span class="fc" id="L166">        PersianDate expected = PersianDate.of(1387, 12, 30);</span>
+<span class="fc" id="L167">        assertEquals(expected, actual);</span>
+<span class="fc" id="L168">    }</span>
+
+    @Test
+    public void testOnPlusMonthEndOfMonthNotLeapYear() {
+<span class="fc" id="L172">        PersianDate actual = PersianDate.of(1396, 4, 30).plusMonths(8);</span>
+<span class="fc" id="L173">        PersianDate expected = PersianDate.of(1396, 12, 29);</span>
+<span class="fc" id="L174">        assertEquals(expected, actual);</span>
+<span class="fc" id="L175">    }</span>
+
+    @Test
+    public void testOnPlusMonthNegative() {
+<span class="fc" id="L179">        PersianDate actual = PersianDate.of(1396, 6, 31).plusMonths(-8);</span>
+<span class="fc" id="L180">        PersianDate expected = PersianDate.of(1395, 10, 30);</span>
+<span class="fc" id="L181">        assertEquals(expected, actual);</span>
+<span class="fc" id="L182">    }</span>
+
+    @Test
+    public void testOnPlusMonthNegativeMoreThan12Months() {
+<span class="fc" id="L186">        PersianDate actual = PersianDate.of(1396, 7, 30).plusMonths(-30);</span>
+<span class="fc" id="L187">        PersianDate expected = PersianDate.of(1394, 1, 30);</span>
+<span class="fc" id="L188">        assertEquals(expected, actual);</span>
+<span class="fc" id="L189">    }</span>
+
+    @Test
+    public void testOnPlusMonthNegativeEndOfYearLeapYear() {
+<span class="fc" id="L193">        PersianDate actual = PersianDate.of(1388, 1, 31).plusMonths(-1);</span>
+<span class="fc" id="L194">        PersianDate expected = PersianDate.of(1387, 12, 30);</span>
+<span class="fc" id="L195">        assertEquals(expected, actual);</span>
+<span class="fc" id="L196">    }</span>
+
+    @Test
+    public void testOnPlusMonthNegativeEndOfYearNotLeapYear() {
+<span class="fc" id="L200">        PersianDate actual = PersianDate.of(1389, 1, 31).plusMonths(-1);</span>
+<span class="fc" id="L201">        PersianDate expected = PersianDate.of(1388, 12, 29);</span>
+<span class="fc" id="L202">        assertEquals(expected, actual);</span>
+<span class="fc" id="L203">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnPlusDaysZero() {
+<span class="fc" id="L208">        assertEquals(PersianDate.MIN, PersianDate.MIN.plusDays(0));</span>
+<span class="fc" id="L209">    }</span>
+
+    @Test
+    public void testOnPlusDays() {
+<span class="fc" id="L213">        PersianDate actual = PersianDate.of(1450, 6, 31).plusDays(1);</span>
+<span class="fc" id="L214">        PersianDate expected = PersianDate.of(1450, 7, 1);</span>
+<span class="fc" id="L215">        assertEquals(expected, actual);</span>
+<span class="fc" id="L216">    }</span>
+
+    @Test
+    public void testOnPlusDaysMoreThan365Days() {
+<span class="fc" id="L220">        PersianDate actual = PersianDate.of(1396, 8, 6).plusDays(24435);</span>
+<span class="fc" id="L221">        PersianDate expected = PersianDate.of(1463, 6, 31);</span>
+<span class="fc" id="L222">        assertEquals(expected, actual);</span>
+<span class="fc" id="L223">    }</span>
+
+    @Test
+    public void testOnPlusDaysEndOfYearLeapYear() {
+<span class="fc" id="L227">        PersianDate actual = PersianDate.of(1387, 12, 29).plusDays(1);</span>
+<span class="fc" id="L228">        PersianDate expected = PersianDate.of(1387, 12, 30);</span>
+<span class="fc" id="L229">        assertEquals(expected, actual);</span>
+<span class="fc" id="L230">    }</span>
+
+    @Test
+    public void testOnPlusDaysEndOfNotYearLeapYear() {
+<span class="fc" id="L234">        PersianDate actual = PersianDate.of(1388, 12, 29).plusDays(1);</span>
+<span class="fc" id="L235">        PersianDate expected = PersianDate.of(1389, 1, 1);</span>
+<span class="fc" id="L236">        assertEquals(expected, actual);</span>
+<span class="fc" id="L237">    }</span>
+
+    @Test
+    public void testOnPlusDaysNegativeFirstOfYearLeapYear() {
+<span class="fc" id="L241">        PersianDate actual = PersianDate.of(1392, 1, 1).plusDays(-1);</span>
+<span class="fc" id="L242">        PersianDate expected = PersianDate.of(1391, 12, 30);</span>
+<span class="fc" id="L243">        assertEquals(expected, actual);</span>
+<span class="fc" id="L244">    }</span>
+
+    @Test
+    public void testOnPlusDaysNegativeFirstOfYearNotLeapYear() {
+<span class="fc" id="L248">        PersianDate actual = PersianDate.of(1393, 1, 1).plusDays(-1);</span>
+<span class="fc" id="L249">        PersianDate expected = PersianDate.of(1392, 12, 29);</span>
+<span class="fc" id="L250">        assertEquals(expected, actual);</span>
+<span class="fc" id="L251">    }</span>
+
+    @Test
+    public void testOnPlusDaysNegativeMoreThan365Days() {
+<span class="fc" id="L255">        PersianDate actual = PersianDate.of(1396, 8, 6).plusDays(-35688);</span>
+<span class="fc" id="L256">        PersianDate expected = PersianDate.of(1298, 11, 22);</span>
+<span class="fc" id="L257">        assertEquals(expected, actual);</span>
+<span class="fc" id="L258">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnIsLeapYear() {
+<span class="fc" id="L263">        PersianDate pd = PersianDate.of(1375, 6, 15);</span>
+        // 7 successive leap years
+<span class="fc bfc" id="L265" title="All 2 branches covered.">        for (int i = 0; i &lt; 7; i++) {</span>
+<span class="fc" id="L266">            assertTrue(pd.isLeapYear());</span>
+<span class="fc" id="L267">            pd = pd.plusYears(4);</span>
+        }
+        // each 33 years, leap year happens after 5 years
+<span class="fc" id="L270">        assertTrue(pd.plusYears(1).isLeapYear());</span>
+<span class="fc" id="L271">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnToEpochDay() {
+<span class="fc" id="L276">        assertEquals(17468, PersianDate.of(1396, 8, 7).toEpochDay());</span>
+<span class="fc" id="L277">        assertEquals(-66869, PersianDate.of(1165, 9, 11).toEpochDay());</span>
+<span class="fc" id="L278">        assertEquals(-492267, PersianDate.of(1, 1, 1).toEpochDay());</span>
+<span class="fc" id="L279">        assertEquals(237851, PersianDate.of(1999, 12, 29).toEpochDay());</span>
+<span class="fc" id="L280">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnGetLengthOfMonth() {
+        // 1387 is a leap year
+<span class="fc" id="L286">        assertEquals(31, PersianDate.of(1387, 1, 1).lengthOfMonth());</span>
+<span class="fc" id="L287">        assertEquals(30, PersianDate.of(1387, 12, 1).lengthOfMonth());</span>
+
+        // 1388 is a normal year
+<span class="fc" id="L290">        assertEquals(31, PersianDate.of(1388, 1, 1).lengthOfMonth());</span>
+<span class="fc" id="L291">        assertEquals(29, PersianDate.of(1388, 12, 1).lengthOfMonth());</span>
+<span class="fc" id="L292">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnGetLongDayOfWeek() {
+<span class="fc" id="L297">        PersianDate pd = PersianDate.of(1387, 12, 30);</span>
+<span class="fc" id="L298">        DayOfWeek dow = DayOfWeek.FRIDAY;</span>
+        // Check about three years
+<span class="fc bfc" id="L300" title="All 2 branches covered.">        for (int i = 0; i &lt; 1000; i++) {</span>
+<span class="fc" id="L301">            assertEquals(dow.getValue(), pd.getLong(DAY_OF_WEEK));</span>
+<span class="fc" id="L302">            pd = pd.plusDays(1);</span>
+<span class="fc" id="L303">            dow = dow.plus(1);</span>
+        }
+<span class="fc" id="L305">    }</span>
+
+    @Test
+    public void testOnGetLongAlignedDayOfWeekInMonth() {
+<span class="fc" id="L309">        PersianDate pd = PersianDate.of(1396, 8, 8);</span>
+<span class="fc" id="L310">        assertEquals(1, pd.getLong(ALIGNED_DAY_OF_WEEK_IN_MONTH));</span>
+<span class="fc" id="L311">        pd = PersianDate.of(1292, 12, 30);</span>
+<span class="fc" id="L312">        assertEquals(2, pd.getLong(ALIGNED_DAY_OF_WEEK_IN_MONTH));</span>
+<span class="fc" id="L313">    }</span>
+
+    @Test
+    public void testOnGetAlignedDayOfWeekInYear() {
+<span class="fc" id="L317">        assertEquals(1, PersianDate.MIN.getLong(ALIGNED_DAY_OF_WEEK_IN_YEAR));</span>
+<span class="fc" id="L318">        assertEquals(3, PersianDate.of(1000, 12, 24).getLong(ALIGNED_DAY_OF_WEEK_IN_YEAR));</span>
+<span class="fc" id="L319">        assertEquals(1, PersianDate.MAX.getLong(ALIGNED_DAY_OF_WEEK_IN_YEAR));</span>
+<span class="fc" id="L320">    }</span>
+
+    @Test
+    public void testOnGetLongAlignedWeekOfMonth() {
+<span class="fc" id="L324">        PersianDate pd = PersianDate.of(1345, 7, 16);</span>
+<span class="fc" id="L325">        assertEquals(3, pd.getLong(ALIGNED_WEEK_OF_MONTH));</span>
+<span class="fc" id="L326">        pd = PersianDate.of(1500, 11, 1);</span>
+<span class="fc" id="L327">        assertEquals(1, pd.getLong(ALIGNED_WEEK_OF_MONTH));</span>
+<span class="fc" id="L328">    }</span>
+
+    @Test
+    public void testOnGetLongALignedWeekOfYear() {
+<span class="fc" id="L332">        PersianDate pd = PersianDate.of(1612, 2, 31);</span>
+<span class="fc" id="L333">        assertEquals(9, pd.getLong(ALIGNED_WEEK_OF_YEAR));</span>
+<span class="fc" id="L334">        pd = PersianDate.of(1999, 11, 30);</span>
+<span class="fc" id="L335">        assertEquals(48, pd.getLong(ALIGNED_WEEK_OF_YEAR));</span>
+<span class="fc" id="L336">    }</span>
+
+    @Test
+    public void testOnGetLongDayOfMonth() {
+<span class="fc" id="L340">        assertEquals(31, PersianDate.of(200, 4, 31).getLong(DAY_OF_MONTH));</span>
+<span class="fc" id="L341">    }</span>
+
+    @Test
+    public void testOnGetLongDayOfYear() {
+<span class="fc" id="L345">        assertEquals(124, PersianDate.of(14, 4, 31).getLong(DAY_OF_YEAR));</span>
+<span class="fc" id="L346">    }</span>
+
+    @Test
+    public void testOnGetLongYearOfEra() {
+<span class="fc" id="L350">        assertEquals(1781, PersianDate.of(1781, 11, 27).getLong(YEAR_OF_ERA));</span>
+<span class="fc" id="L351">    }</span>
+
+    @Test
+    public void testOnGetLongYear() {
+<span class="fc" id="L355">        assertEquals(451, PersianDate.of(451, 8, 21).getLong(YEAR));</span>
+<span class="fc" id="L356">    }</span>
+
+    @Test
+    public void testOnGetLongMonthOfYear() {
+<span class="fc" id="L360">        assertEquals(1, PersianDate.MIN.getLong(MONTH_OF_YEAR));</span>
+<span class="fc" id="L361">        assertEquals(12, PersianDate.MAX.getLong(MONTH_OF_YEAR));</span>
+<span class="fc" id="L362">    }</span>
+
+    @Test(expected = UnsupportedTemporalTypeException.class)
+    public void testOnGetLongUnsupportedTemporal() {
+<span class="nc" id="L366">        PersianDate.of(151, 12, 11).getLong(NANO_OF_DAY);</span>
+<span class="nc" id="L367">    }</span>
+
+    @Test
+    public void testOnProlepticMonth() {
+<span class="fc" id="L371">        PersianDate pd = PersianDate.of(1612, 2, 31);</span>
+<span class="fc" id="L372">        assertEquals(19345, pd.getLong(PROLEPTIC_MONTH));</span>
+<span class="fc" id="L373">        pd = PersianDate.of(1999, 11, 30);</span>
+<span class="fc" id="L374">        assertEquals(23998, pd.getLong(PROLEPTIC_MONTH));</span>
+<span class="fc" id="L375">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnToGregorian() {
+<span class="fc" id="L380">        PersianDate pdt = PersianDate.of(1396, 6, 20);</span>
+<span class="fc" id="L381">        LocalDate expected = LocalDate.of(2017, 9, 11);</span>
+<span class="fc" id="L382">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L383">    }</span>
+
+    @Test
+    public void testOnToGregorianMinPersianDate() {
+<span class="fc" id="L387">        LocalDate expected = LocalDate.of(622, 3, 22);</span>
+<span class="fc" id="L388">        assertEquals(expected, PersianDate.MIN.toGregorian());</span>
+<span class="fc" id="L389">    }</span>
+
+    @Test
+    public void testOnToGregorianMaxPersianDate() {
+<span class="fc" id="L393">        LocalDate expected = LocalDate.of(2621, 3, 20);</span>
+<span class="fc" id="L394">        assertEquals(expected, PersianDate.MAX.toGregorian());</span>
+<span class="fc" id="L395">    }</span>
+
+    @Test
+    public void testOnToGregorianInPersianLeapYear() {
+<span class="fc" id="L399">        PersianDate pdt = PersianDate.of(1399, 12, 30);</span>
+<span class="fc" id="L400">        LocalDate expected = LocalDate.of(2021, 3, 20);</span>
+<span class="fc" id="L401">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L402">    }</span>
+
+    @Test
+    public void testOnToGregorianInGregorianLeapYear() {
+<span class="fc" id="L406">        PersianDate pdt = PersianDate.of(1394, 12, 10);</span>
+<span class="fc" id="L407">        LocalDate expected = LocalDate.of(2016, 2, 29);</span>
+<span class="fc" id="L408">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L409">    }</span>
+
+    @Test
+    public void testOnToGregorianOnFirstOfPersianYear() {
+<span class="fc" id="L413">        PersianDate pdt = PersianDate.of(1407, 1, 1);</span>
+<span class="fc" id="L414">        LocalDate expected = LocalDate.of(2028, 3, 20);</span>
+<span class="fc" id="L415">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L416">    }</span>
+
+    @Test
+    public void testOnToGregorianOnEndOfPersianYear() {
+<span class="fc" id="L420">        PersianDate pdt = PersianDate.of(1376, 12, 29);</span>
+<span class="fc" id="L421">        LocalDate expected = LocalDate.of(1998, 3, 20);</span>
+<span class="fc" id="L422">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L423">    }</span>
+
+    @Test
+    public void testOnToGregorianOnFirstOfGregorianYear() {
+<span class="fc" id="L427">        PersianDate pdt = PersianDate.of(1385, 10, 11);</span>
+<span class="fc" id="L428">        LocalDate expected = LocalDate.of(2007, 1, 1);</span>
+<span class="fc" id="L429">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L430">    }</span>
+
+    @Test
+    public void testOnToGregorianOnEndOfGregorianYear() {
+<span class="fc" id="L434">        PersianDate pdt = PersianDate.of(1429, 10, 10);</span>
+<span class="fc" id="L435">        LocalDate expected = LocalDate.of(2050, 12, 31);</span>
+<span class="fc" id="L436">        assertEquals(expected, pdt.toGregorian());</span>
+<span class="fc" id="L437">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnToPersian() {
+<span class="fc" id="L442">        LocalDate ld = LocalDate.of(2046, 5, 10);</span>
+<span class="fc" id="L443">        PersianDate expected = PersianDate.of(1425, 2, 20);</span>
+<span class="fc" id="L444">        assertEquals(expected, PersianDate.fromGregorian(ld));</span>
+<span class="fc" id="L445">    }</span>
+
+    @Test
+    public void testOnToPersianInGregorianLeapYear() {
+<span class="fc" id="L449">        LocalDate ldt = LocalDate.of(2012, 2, 29);</span>
+<span class="fc" id="L450">        PersianDate expected = PersianDate.of(1390, 12, 10);</span>
+<span class="fc" id="L451">        assertEquals(expected, PersianDate.fromGregorian(ldt));</span>
+<span class="fc" id="L452">    }</span>
+
+    @Test
+    public void testOnToPersianInPersianLeapYear() {
+<span class="fc" id="L456">        LocalDate ldt = LocalDate.of(2034, 3, 20);</span>
+<span class="fc" id="L457">        PersianDate expected = PersianDate.of(1412, 12, 30);</span>
+<span class="fc" id="L458">        assertEquals(expected, PersianDate.fromGregorian(ldt));</span>
+<span class="fc" id="L459">    }</span>
+
+    @Test
+    public void testOnToPersianOnFirstOfGregorianYear() {
+<span class="fc" id="L463">        LocalDate ldt = LocalDate.of(2008, 1, 1);</span>
+<span class="fc" id="L464">        PersianDate expected = PersianDate.of(1386, 10, 11);</span>
+<span class="fc" id="L465">        assertEquals(expected, PersianDate.fromGregorian(ldt));</span>
+<span class="fc" id="L466">    }</span>
+
+    @Test
+    public void testOnToPersianOnEndOfGregorianYear() {
+<span class="fc" id="L470">        LocalDate ldt = LocalDate.of(2003, 3, 1);</span>
+<span class="fc" id="L471">        PersianDate expected = PersianDate.of(1381, 12, 10);</span>
+<span class="fc" id="L472">        assertEquals(expected, PersianDate.fromGregorian(ldt));</span>
+<span class="fc" id="L473">    }</span>
+
+    @Test
+    public void testOnToPersianOnFirstOfPersianYear() {
+<span class="fc" id="L477">        LocalDate ldt = LocalDate.of(1986, 3, 21);</span>
+<span class="fc" id="L478">        PersianDate expected = PersianDate.of(1365, 1, 1);</span>
+<span class="fc" id="L479">        assertEquals(expected, PersianDate.fromGregorian(ldt));</span>
+<span class="fc" id="L480">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnIsEqual() {
+<span class="fc" id="L485">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L486">        PersianDate b = PersianDate.of(1396, 6, 10);</span>
+<span class="fc" id="L487">        PersianDate c = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L488">        assertFalse(a.isEqual(b));</span>
+<span class="fc" id="L489">        assertTrue(a.isEqual(c));</span>
+<span class="fc" id="L490">        assertFalse(b.isEqual(c));</span>
+<span class="fc" id="L491">        assertTrue(b.isEqual(b));</span>
+<span class="fc" id="L492">    }</span>
+
+    @Test
+    public void testOnBefore() {
+<span class="fc" id="L496">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L497">        PersianDate b = PersianDate.of(1396, 6, 10);</span>
+<span class="fc" id="L498">        assertTrue(a.isBefore(b));</span>
+<span class="fc" id="L499">        assertFalse(a.isBefore(a));</span>
+<span class="fc" id="L500">        assertFalse(b.isBefore(a));</span>
+<span class="fc" id="L501">    }</span>
+
+    @Test
+    public void testOnAfter() {
+<span class="fc" id="L505">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L506">        PersianDate b = PersianDate.of(1396, 6, 10);</span>
+<span class="fc" id="L507">        assertFalse(a.isAfter(b));</span>
+<span class="fc" id="L508">        assertFalse(a.isAfter(a));</span>
+<span class="fc" id="L509">        assertTrue(b.isAfter(a));</span>
+<span class="fc" id="L510">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnEqualsNull() {
+<span class="fc" id="L515">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L516">        assertNotEquals(null, a);</span>
+<span class="fc" id="L517">    }</span>
+
+    @Test
+    public void testOnEqualsReflexivity() {
+<span class="fc" id="L521">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L522">        assertEquals(a, a);</span>
+<span class="fc" id="L523">    }</span>
+
+    @Test
+    public void testOnEqualsSymmetricity() {
+<span class="fc" id="L527">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L528">        PersianDate b = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L529">        assertEquals(a, b);</span>
+<span class="fc" id="L530">        assertEquals(b, a);</span>
+<span class="fc" id="L531">    }</span>
+
+    @Test
+    public void testOnEqualsTransitivity() {
+<span class="fc" id="L535">        PersianDate a = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L536">        PersianDate b = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L537">        PersianDate c = PersianDate.of(1396, 3, 15);</span>
+<span class="fc" id="L538">        assertEquals(a, b);</span>
+<span class="fc" id="L539">        assertEquals(b, c);</span>
+<span class="fc" id="L540">        assertEquals(a, c);</span>
+<span class="fc" id="L541">    }</span>
+
+    @Test
+    public void testOnHashCodeForEqualObjects() {
+<span class="fc" id="L545">        PersianDate a = PersianDate.of(1500, 12, 15);</span>
+<span class="fc" id="L546">        PersianDate b = PersianDate.of(1500, 12, 15);</span>
+<span class="fc" id="L547">        assertEquals(a, b);</span>
+<span class="fc" id="L548">        assertEquals(a.hashCode(), b.hashCode());</span>
+<span class="fc" id="L549">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnToString() {
+<span class="fc" id="L554">        PersianDate PersianDate1 = PersianDate.of(1391, 11, 6);</span>
+<span class="fc" id="L555">        assertEquals(&quot;1391-11-06&quot;, PersianDate1.toString());</span>
+<span class="fc" id="L556">        PersianDate PersianDate2 = PersianDate.of(31, 1, 12);</span>
+<span class="fc" id="L557">        assertEquals(&quot;0031-01-12&quot;, PersianDate2.toString());</span>
+<span class="fc" id="L558">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnUntilTemporalDays() {
+<span class="fc" id="L563">        PersianDate pd1 = PersianDate.of(1400, 1, 1);</span>
+<span class="fc" id="L564">        PersianDate pd2 = PersianDate.of(1401, 1, 1);</span>
+<span class="fc" id="L565">        assertEquals(365, pd1.until(pd2, DAYS));</span>
+<span class="fc" id="L566">        assertEquals(-365, pd2.until(pd1, DAYS));</span>
+<span class="fc" id="L567">        assertEquals(10365, pd1.until(pd2.plusDays(10000), DAYS));</span>
+<span class="fc" id="L568">        assertEquals(-10365, pd2.until(pd1.plusDays(-10000), DAYS));</span>
+<span class="fc" id="L569">    }</span>
+
+    @Test
+    public void testOnUntilTemporalWeeks() {
+<span class="fc" id="L573">        PersianDate pd1 = PersianDate.of(1400, 1, 1);</span>
+<span class="fc" id="L574">        PersianDate pd2 = PersianDate.of(1401, 1, 1);</span>
+<span class="fc" id="L575">        assertEquals(52, pd1.until(pd2, WEEKS));</span>
+<span class="fc" id="L576">    }</span>
+
+    @Test
+    public void testOnUntilTemporalYears() {
+<span class="fc" id="L580">        PersianDate pd1 = PersianDate.of(1000, 1, 1);</span>
+<span class="fc" id="L581">        PersianDate pd2 = PersianDate.of(1999, 12, 29);</span>
+<span class="fc" id="L582">        assertEquals(999, pd1.until(pd2, YEARS));</span>
+<span class="fc" id="L583">        assertEquals(1998, PersianDate.MIN.until(PersianDate.MAX, YEARS));</span>
+<span class="fc" id="L584">    }</span>
+
+    @Test
+    public void testOnUntilTemporalDecades() {
+<span class="fc" id="L588">        assertEquals(199, PersianDate.MIN.until(PersianDate.MAX, DECADES));</span>
+<span class="fc" id="L589">    }</span>
+
+    @Test
+    public void testOnUntilTemporalCenturies() {
+<span class="fc" id="L593">        assertEquals(19, PersianDate.MIN.until(PersianDate.MAX, CENTURIES));</span>
+<span class="fc" id="L594">    }</span>
+
+    @Test
+    public void testOnUntilTemporalMillennia() {
+<span class="fc" id="L598">        assertEquals(1, PersianDate.MIN.until(PersianDate.MAX, MILLENNIA));</span>
+<span class="fc" id="L599">        assertEquals(0, PersianDate.MIN.plusYears(1000).until(PersianDate.MAX, MILLENNIA));</span>
+<span class="fc" id="L600">    }</span>
+
+    @Test
+    public void testOnUntilTemporalEra() {
+<span class="fc" id="L604">        assertEquals(0, PersianDate.MIN.until(PersianDate.MAX, ERAS));</span>
+<span class="fc" id="L605">    }</span>
+
+    @Test(expected = UnsupportedTemporalTypeException.class)
+    public void testOnUntilTemproalUnsoppurted() {
+<span class="nc" id="L609">        PersianDate.MIN.until(PersianDate.MAX, NANOS);</span>
+<span class="nc" id="L610">    }</span>
+
+    @Test
+    public void testOnUntilTemporalMonths() {
+<span class="fc" id="L614">        PersianDate pd1 = PersianDate.of(1396, 1, 1);</span>
+<span class="fc" id="L615">        PersianDate pd2 = PersianDate.of(1396, 2, 1);</span>
+<span class="fc" id="L616">        assertEquals(1, pd1.until(pd2, MONTHS));</span>
+<span class="fc" id="L617">        assertEquals(-1, pd2.until(pd1, MONTHS));</span>
+<span class="fc" id="L618">        assertEquals(0, pd1.until(pd2.plusDays(-1), MONTHS));</span>
+<span class="fc" id="L619">        assertEquals(2, pd1.until(pd2.plusDays(31), MONTHS));</span>
+        // End of year
+<span class="fc" id="L621">        pd1 = PersianDate.of(1387, 12, 1);</span>
+<span class="fc" id="L622">        pd2 = PersianDate.of(1388, 1, 1);</span>
+<span class="fc" id="L623">        assertEquals(1, pd1.until(pd2, MONTHS));</span>
+<span class="fc" id="L624">        assertEquals(-1, pd2.until(pd1, MONTHS));</span>
+<span class="fc" id="L625">    }</span>
+
+    //-----------------------------------------------------------------------
+    @Test
+    public void testOnUntilChronoLocalDate1() {
+<span class="fc" id="L630">        PersianDate pd1 = PersianDate.of(1380, 7, 16);</span>
+<span class="fc" id="L631">        PersianDate pd2 = PersianDate.of(1400, 2, 21);</span>
+<span class="fc" id="L632">        ChronoPeriod pd1UntilPd2 = pd1.until(pd2);</span>
+<span class="fc" id="L633">        assertEquals(19, pd1UntilPd2.get(YEARS));</span>
+<span class="fc" id="L634">        assertEquals(7, pd1UntilPd2.get(MONTHS));</span>
+<span class="fc" id="L635">        assertEquals(5, pd1UntilPd2.get(DAYS));</span>
+<span class="fc" id="L636">        ChronoPeriod pd2UntilPd1 = pd2.until(pd1);</span>
+<span class="fc" id="L637">        assertEquals(-19, pd2UntilPd1.get(YEARS));</span>
+<span class="fc" id="L638">        assertEquals(-7, pd2UntilPd1.get(MONTHS));</span>
+<span class="fc" id="L639">        assertEquals(-5, pd2UntilPd1.get(DAYS));</span>
+<span class="fc" id="L640">    }</span>
+
+    @Test
+    public void testOnUntilChronoLocalDate2() {
+<span class="fc" id="L644">        PersianDate pd1 = PersianDate.of(1396, 5, 10);</span>
+<span class="fc" id="L645">        PersianDate pd2 = PersianDate.of(1400, 11, 3);</span>
+<span class="fc" id="L646">        ChronoPeriod pd1UntilPd2 = pd1.until(pd2);</span>
+<span class="fc" id="L647">        assertEquals(4, pd1UntilPd2.get(YEARS));</span>
+<span class="fc" id="L648">        assertEquals(5, pd1UntilPd2.get(MONTHS));</span>
+<span class="fc" id="L649">        assertEquals(23, pd1UntilPd2.get(DAYS));</span>
+<span class="fc" id="L650">        ChronoPeriod pd2UntilPd1 = pd2.until(pd1);</span>
+<span class="fc" id="L651">        assertEquals(-4, pd2UntilPd1.get(YEARS));</span>
+<span class="fc" id="L652">        assertEquals(-5, pd2UntilPd1.get(MONTHS));</span>
+<span class="fc" id="L653">        assertEquals(-24, pd2UntilPd1.get(DAYS));</span>
+<span class="fc" id="L654">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>persian-date-time (17/11/2020 14:55:13)</div></body></html>

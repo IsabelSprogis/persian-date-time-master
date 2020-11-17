@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PersianChronologyTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">persian-date-time (17/11/2020 14:55:13)</a> &gt; <a href="../../index.html" class="el_group">persian-date-time</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.github.mfathi91.time</a> &gt; <span class="el_source">PersianChronologyTest.java</span></div><h1>PersianChronologyTest.java</h1><pre class="source lang-java linenums">package com.github.mfathi91.time;
+
+import org.junit.Test;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.chrono.JapaneseEra;
+import java.time.temporal.ValueRange;
+import java.util.Arrays;
+
+import static java.time.temporal.ChronoField.*;
+import static org.junit.Assert.*;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
+
+<span class="fc" id="L15">public class PersianChronologyTest {</span>
+
+    @Test
+    public void testOnCheckDayOfYear1() {
+<span class="fc" id="L19">        PersianChronology.INSTANCE.checkDayOfYear(1387, 366);</span>
+<span class="fc" id="L20">        PersianChronology.INSTANCE.checkDayOfYear(1385, 365);</span>
+<span class="fc" id="L21">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnCheckDayOfYear2() {
+<span class="nc" id="L25">        PersianChronology.INSTANCE.checkDayOfYear(1385, 366);</span>
+<span class="nc" id="L26">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnGetId() {
+<span class="fc" id="L31">        assertEquals(&quot;Persian&quot;, PersianChronology.INSTANCE.getId());</span>
+<span class="fc" id="L32">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnGetCalendarType() {
+<span class="fc" id="L37">        assertEquals(&quot;persian&quot;, PersianChronology.INSTANCE.getCalendarType());</span>
+<span class="fc" id="L38">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnDateYearMonthDay() {
+<span class="fc" id="L43">        PersianDate expected = PersianDate.of(1000, 4, 25);</span>
+<span class="fc" id="L44">        PersianDate actual = PersianChronology.INSTANCE.date(1000, 4, 25);</span>
+<span class="fc" id="L45">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L46">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnDateYearDay1() {
+<span class="fc" id="L51">        PersianDate expected = PersianDate.of(1387, 12, 30);</span>
+<span class="fc" id="L52">        PersianDate actual = PersianChronology.INSTANCE.dateYearDay(1387, 366);</span>
+<span class="fc" id="L53">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L54">    }</span>
+
+    @Test
+    public void testOnDateYearDay2() {
+<span class="fc" id="L58">        PersianDate expected = PersianDate.of(1000, 1, 1);</span>
+<span class="fc" id="L59">        PersianDate actual = PersianChronology.INSTANCE.dateYearDay(1000, 1);</span>
+<span class="fc" id="L60">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L61">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnDateYearDay3() {
+<span class="nc" id="L65">        PersianChronology.INSTANCE.dateYearDay(1388, 366);</span>
+<span class="nc" id="L66">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnDateEpochDay1() {
+<span class="fc" id="L71">        PersianDate expected = PersianDate.of(1396, 8, 25);</span>
+<span class="fc" id="L72">        PersianDate actual = PersianChronology.INSTANCE.dateEpochDay(17486);</span>
+<span class="fc" id="L73">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L74">    }</span>
+
+    @Test
+    public void testOnDateEpochDay2() {
+<span class="fc" id="L78">        PersianDate expected = PersianDate.of(378, 12, 8);</span>
+<span class="fc" id="L79">        PersianDate actual = PersianChronology.INSTANCE.dateEpochDay(-354228);</span>
+<span class="fc" id="L80">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L81">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnDateTemporalAccessor1() {
+<span class="fc" id="L86">        PersianDate expected = PersianDate.of(1396, 8, 25);</span>
+<span class="fc" id="L87">        PersianDate actual = PersianChronology.INSTANCE.date(PersianDate.of(1396, 8, 25));</span>
+<span class="fc" id="L88">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L89">    }</span>
+
+    @Test
+    public void testOnDateTemporalAccessor2() {
+<span class="fc" id="L93">        PersianDate expected = PersianDate.of(1396, 8, 25);</span>
+<span class="fc" id="L94">        PersianDate actual = PersianChronology.INSTANCE.date(LocalDate.of(2017, 11, 16));</span>
+<span class="fc" id="L95">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L96">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnIsLeapYear() {
+<span class="fc" id="L101">        assertTrue(PersianChronology.INSTANCE.isLeapYear(999));</span>
+<span class="fc" id="L102">        assertTrue(PersianChronology.INSTANCE.isLeapYear(1003));</span>
+<span class="fc" id="L103">        assertTrue(PersianChronology.INSTANCE.isLeapYear(1387));</span>
+<span class="fc" id="L104">        assertFalse(PersianChronology.INSTANCE.isLeapYear(5));</span>
+<span class="fc" id="L105">        assertFalse(PersianChronology.INSTANCE.isLeapYear(1388));</span>
+<span class="fc" id="L106">        assertFalse(PersianChronology.INSTANCE.isLeapYear(671));</span>
+<span class="fc" id="L107">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnProlepticYear1() {
+<span class="fc" id="L112">        assertEquals(1000, PersianChronology.INSTANCE.prolepticYear(PersianEra.AHS, 1000));</span>
+<span class="fc" id="L113">    }</span>
+
+    @Test(expected = ClassCastException.class)
+    public void testOnProlepticYear2() {
+<span class="nc" id="L117">        PersianChronology.INSTANCE.prolepticYear(JapaneseEra.MEIJI, 500);</span>
+<span class="nc" id="L118">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnEraOf1() {
+<span class="fc" id="L123">        assertEquals(PersianEra.AHS, PersianChronology.INSTANCE.eraOf(1));</span>
+<span class="fc" id="L124">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void testOnEraOf2() {
+<span class="nc" id="L128">        PersianChronology.INSTANCE.eraOf(2);</span>
+<span class="nc" id="L129">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnEras() {
+<span class="fc" id="L134">        assertReflectionEquals(Arrays.asList(PersianEra.AHS), PersianChronology.INSTANCE.eras());</span>
+<span class="fc" id="L135">    }</span>
+    //-----------------------------------------------------
+
+    @Test
+    public void testOnRangeDayOfMonth() {
+<span class="fc" id="L140">        ValueRange expected = ValueRange.of(1, 29, 31);</span>
+<span class="fc" id="L141">        ValueRange actual = PersianChronology.INSTANCE.range(DAY_OF_MONTH);</span>
+<span class="fc" id="L142">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L143">    }</span>
+
+    @Test
+    public void testOnRangeDayOfYear() {
+<span class="fc" id="L147">        ValueRange expected = ValueRange.of(1, 365, 366);</span>
+<span class="fc" id="L148">        ValueRange actual = PersianChronology.INSTANCE.range(DAY_OF_YEAR);</span>
+<span class="fc" id="L149">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L150">    }</span>
+
+    @Test
+    public void testOnRangeAlignedWeekOfMonth() {
+<span class="fc" id="L154">        ValueRange expected = ValueRange.of(1, 5);</span>
+<span class="fc" id="L155">        ValueRange actual = PersianChronology.INSTANCE.range(ALIGNED_WEEK_OF_MONTH);</span>
+<span class="fc" id="L156">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L157">    }</span>
+
+    @Test
+    public void testOnRangeYear() {
+<span class="fc" id="L161">        ValueRange expected = ValueRange.of(1, 1999);</span>
+<span class="fc" id="L162">        ValueRange actual = PersianChronology.INSTANCE.range(YEAR);</span>
+<span class="fc" id="L163">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L164">    }</span>
+
+    @Test
+    public void testOnRangeEra(){
+<span class="fc" id="L168">        ValueRange expected = ValueRange.of(1, 1);</span>
+<span class="fc" id="L169">        ValueRange actual = PersianChronology.INSTANCE.range(ERA);</span>
+<span class="fc" id="L170">        assertReflectionEquals(expected, actual);</span>
+<span class="fc" id="L171">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>persian-date-time (17/11/2020 14:55:13)</div></body></html>

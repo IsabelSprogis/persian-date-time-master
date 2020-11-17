@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PersianEraTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">persian-date-time (17/11/2020 14:55:13)</a> &gt; <a href="../../index.html" class="el_group">persian-date-time</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.github.mfathi91.time</a> &gt; <span class="el_source">PersianEraTest.java</span></div><h1>PersianEraTest.java</h1><pre class="source lang-java linenums">package com.github.mfathi91.time;
+
+import org.junit.Test;
+
+import java.time.DateTimeException;
+import java.time.temporal.UnsupportedTemporalTypeException;
+import java.time.temporal.ValueRange;
+
+import static java.time.temporal.ChronoField.ERA;
+import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
+import static org.junit.Assert.assertEquals;
+
+<span class="fc" id="L13">public class PersianEraTest {</span>
+
+    @Test(expected = DateTimeException.class)
+    public void of_persianEra_zero() {
+<span class="nc" id="L17">        PersianEra.of(0);</span>
+<span class="nc" id="L18">    }</span>
+
+    @Test(expected = DateTimeException.class)
+    public void of_persianEra_two() {
+<span class="nc" id="L22">        PersianEra.of(2);</span>
+<span class="nc" id="L23">    }</span>
+
+    @Test
+    public void of_persianEra_one() {
+<span class="fc" id="L27">        assertEquals(PersianEra.AHS, PersianEra.of(1));</span>
+<span class="fc" id="L28">    }</span>
+
+    @Test
+    public void getValue() {
+<span class="fc" id="L32">        assertEquals(1, PersianEra.AHS.getValue());</span>
+<span class="fc" id="L33">    }</span>
+
+    @Test
+    public void range_instanceOfEra() {
+<span class="fc" id="L37">        assertEquals(ValueRange.of(1, 1), PersianEra.AHS.range(ERA));</span>
+<span class="fc" id="L38">    }</span>
+
+    @Test(expected = UnsupportedTemporalTypeException.class)
+    public void range_notInstanceOfEra() {
+<span class="nc" id="L42">        PersianEra.AHS.range(MINUTE_OF_HOUR);</span>
+<span class="nc" id="L43">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>persian-date-time (17/11/2020 14:55:13)</div></body></html>

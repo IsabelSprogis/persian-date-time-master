@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MyUtilsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">persian-date-time (17/11/2020 14:55:13)</a> &gt; <a href="../../index.html" class="el_group">persian-date-time</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.github.mfathi91.time</a> &gt; <span class="el_source">MyUtilsTest.java</span></div><h1>MyUtilsTest.java</h1><pre class="source lang-java linenums">package com.github.mfathi91.time;
+
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+<span class="fc" id="L7">public class MyUtilsTest {</span>
+
+    @Test
+    public void testOnIsBetweenInt() {
+<span class="fc" id="L11">        assertEquals(true, MyUtils.isBetween(2, 1, 3));</span>
+<span class="fc" id="L12">        assertEquals(true, MyUtils.isBetween(0, -1, 1));</span>
+<span class="fc" id="L13">        assertEquals(true, MyUtils.isBetween(-10, -10000, -10));</span>
+<span class="fc" id="L14">        assertEquals(false, MyUtils.isBetween(0, -10, -1));</span>
+<span class="fc" id="L15">        assertEquals(false, MyUtils.isBetween(-100, 99, 101));</span>
+<span class="fc" id="L16">        assertEquals(false, MyUtils.isBetween(-100, -99, -101));</span>
+<span class="fc" id="L17">    }</span>
+
+    @Test
+    public void testOnIsBetweenLong() {
+<span class="fc" id="L21">        assertEquals(true, MyUtils.isBetween(2L, 1L, 3L));</span>
+<span class="fc" id="L22">        assertEquals(true, MyUtils.isBetween(0L, -1L, 1L));</span>
+<span class="fc" id="L23">        assertEquals(true, MyUtils.isBetween(-10L, -10000L, -10L));</span>
+<span class="fc" id="L24">        assertEquals(false, MyUtils.isBetween(0L, -10L, -1L));</span>
+<span class="fc" id="L25">        assertEquals(false, MyUtils.isBetween(-100L, 99L, 101L));</span>
+<span class="fc" id="L26">        assertEquals(false, MyUtils.isBetween(-100L, -99L, -101L));</span>
+<span class="fc" id="L27">    }</span>
+
+    @Test
+    public void testOnIntegerRequiresRange() {
+<span class="fc" id="L31">        assertEquals(5, MyUtils.intRequireRange(5, -100, 100, &quot;sth&quot;));</span>
+<span class="fc" id="L32">        assertEquals(-100, MyUtils.intRequireRange(-100, -101, -99, &quot;sth&quot;));</span>
+<span class="fc" id="L33">    }</span>
+
+    @Test
+    public void testOnIntRequireRange() {
+<span class="fc" id="L37">        MyUtils.intRequireRange(Integer.MAX_VALUE - 1,</span>
+<span class="fc" id="L38">                Integer.MAX_VALUE - 2, Integer.MAX_VALUE, &quot;exception&quot;);</span>
+<span class="fc" id="L39">        MyUtils.intRequireRange(Integer.MIN_VALUE +1,</span>
+<span class="fc" id="L40">                Integer.MIN_VALUE, Integer.MIN_VALUE + 2, &quot;exception&quot;);</span>
+<span class="fc" id="L41">    }</span>
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testOnIntRequireRangeException() {
+<span class="pc" id="L45">        MyUtils.intRequireRange(Integer.MIN_VALUE +1, Integer.MIN_VALUE + 2,</span>
+<span class="fc" id="L46">                Integer.MIN_VALUE, &quot;exception&quot;);</span>
+<span class="nc" id="L47">    }</span>
+
+    @Test
+    public void testOnIntRequirePositive() {
+<span class="fc" id="L51">        MyUtils.intRequirePositive(1, &quot;one&quot;);</span>
+<span class="fc" id="L52">    }</span>
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testOnIntRequirePositiveException() {
+<span class="nc" id="L56">        MyUtils.intRequirePositive(0, &quot;zero&quot;);</span>
+<span class="nc" id="L57">    }</span>
+
+    @Test
+    public void testOnLongRequireRange() {
+<span class="fc" id="L61">        MyUtils.longRequireRange(Long.MAX_VALUE - 1,</span>
+<span class="fc" id="L62">                Long.MAX_VALUE - 2, Long.MAX_VALUE, &quot;exception&quot;);</span>
+<span class="fc" id="L63">        MyUtils.longRequireRange(Long.MIN_VALUE +1,</span>
+<span class="fc" id="L64">                Long.MIN_VALUE, Long.MIN_VALUE + 2, &quot;exception&quot;);</span>
+<span class="fc" id="L65">    }</span>
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testOnLongRequireRangeException() {
+<span class="pc" id="L69">        MyUtils.longRequireRange(Long.MIN_VALUE +1, Long.MIN_VALUE + 2,</span>
+<span class="fc" id="L70">                Long.MIN_VALUE, &quot;exception&quot;);</span>
+<span class="nc" id="L71">    }</span>
+
+    @Test
+    public void testOnLongRequirePositive() {
+<span class="fc" id="L75">        MyUtils.longRequirePositive(1L, &quot;one&quot;);</span>
+<span class="fc" id="L76">    }</span>
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testOnLongRequirePositiveException() {
+<span class="nc" id="L80">        MyUtils.longRequirePositive(0L, &quot;zero&quot;);</span>
+<span class="nc" id="L81">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span>persian-date-time (17/11/2020 14:55:13)</div></body></html>
